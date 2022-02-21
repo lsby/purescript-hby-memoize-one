@@ -7,7 +7,6 @@ exports.memoizeOnce = (f) => {
     return (arg) => {
       if (arguments.length != 1) throw new Error("不能缓存多参数调用的函数");
       if (arg !== cacheArg) {
-        map = new Map();
         var value = fn(arg);
         var result = null;
         if (typeof value === "function") {
