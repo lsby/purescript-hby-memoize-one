@@ -2,11 +2,11 @@
 exports.memoizeOnce = (f) => {
   return memoize_once(f);
 
-  function memoize_once(fn, cacheArg, cacheResult) {
+  function memoize_once(fn, cache = { cacheArg: null, cacheResult: null }) {
     if (typeof fn !== "function") return fn;
     return (arg) => {
       if (arguments.length != 1) throw new Error("不能缓存多参数调用的函数");
-      if (arg !== cacheArg) {
+      if (arg !== cache.cacheArg) {
         var value = fn(arg);
         var result = null;
         if (typeof value === "function") {
@@ -14,9 +14,12 @@ exports.memoizeOnce = (f) => {
         } else {
           result = value;
         }
-        cacheResult = result;
+        cache.cacheArg = arg;
+        cache.cacheResult = result;
+        return cache.cacheResult;
+      } else {
+        return cache.cacheResult;
       }
-      return cacheResult;
     };
   }
 };
